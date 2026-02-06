@@ -260,6 +260,64 @@
       margin-bottom: 0.5rem;
       font-size: 0.9rem;
     }
+
+    .general-settings-table {
+      margin-bottom: 2rem;
+      border-bottom: 1px solid var(--border-color);
+    }
+
+    .slider-container {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+    }
+
+    input[type="range"] {
+      -webkit-appearance: none;
+      appearance: none;
+      width: 200px;
+      height: 8px;
+      background: var(--medium-gray);
+      border-radius: 5px;
+      outline: none;
+      cursor: pointer;
+    }
+
+    input[type="range"]::-webkit-slider-thumb {
+      -webkit-appearance: none;
+      appearance: none;
+      width: 20px;
+      height: 20px;
+      background: var(--primary-color);
+      border-radius: 50%;
+      cursor: pointer;
+      transition: background-color 0.2s ease;
+    }
+
+    input[type="range"]::-moz-range-thumb {
+      width: 20px;
+      height: 20px;
+      background: var(--primary-color);
+      border-radius: 50%;
+      cursor: pointer;
+      transition: background-color 0.2s ease;
+    }
+    
+    input[type="range"]:hover::-webkit-slider-thumb {
+      background: var(--primary-hover);
+    }
+
+    input[type="range"]:hover::-moz-range-thumb {
+      background: var(--primary-hover);
+    }
+
+    .slider-value {
+      font-weight: 600;
+      font-size: 1rem;
+      min-width: 25px;
+      text-align: center;
+      color: var(--primary-color);
+    }
   </style>
 </head>
 <body>
@@ -268,6 +326,23 @@
   
   <div class="container">
     <div id="statusMessage" class="status-message"></div>
+
+    <div class="header-row">
+      <h2>General Settings</h2>
+    </div>
+    <table class="general-settings-table">
+      <tbody>
+        <tr>
+          <td class="subtitle">
+            <label for="maxMatches">Max links to open per match</label>
+          </td>
+          <td class="slider-container">
+            <input type="range" id="maxMatches" min="1" max="20" step="1">
+            <span id="maxMatchesValue" class="slider-value">5</span>
+          </td>
+        </tr>
+      </tbody>
+    </table>
     
     <div class="header-row">
       <h2>URL Patterns</h2>
@@ -289,8 +364,8 @@
     
     <div class="actions">
       <div class="button-group">
-        <button id="exportPatterns">⏬ Export Configuration</button>
-        <button id="importPatterns">🔃 Import Configuration</button>
+        <button id="exportConfig">⏬ Export Configuration</button>
+        <button id="importConfig">🔃 Import Configuration</button>
       </div>
       <button id="resetPatterns" class="danger">Reset to Defaults</button>
     </div>

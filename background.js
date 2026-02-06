@@ -1,19 +1,13 @@
-// Load shared defaults (available via defaults.js when running in windows/pages).
-// In the service worker we can import the script to populate globalThis.DEFAULT_PATTERNS
-try {
-  importScripts('defaults.js', 'matching.js');
-} catch (e) {
-  console.warn('Could not import defaults.js in service worker:', e);
-}
+importScripts('defaults.js', 'matching.js');
 
 chrome.runtime.onInstalled.addListener((details) => {
   if (details.reason === 'install') {
-    // Only set defaults if user hasn't already configured patterns
-    chrome.storage.sync.get(['patterns'], (result) => {
-      if (!result.patterns || result.patterns.length === 0) {
-        const defaults = globalThis.DEFAULT_PATTERNS || [];
-        chrome.storage.sync.set({ patterns: defaults }, () => {
-          console.log('Default patterns installed');
+    // On first install, set the default patterns and maxMatches
+    chrome.storage.sync.get({ patterns: [], maxMatches: 5 }, (result) => {
+      if (result.patterns.length === 0) {
+        const defaultPatterns = globalThis.DEFAULT_PATTERNS || [];
+        chrome.storage.sync.set({ patterns: defaultPatterns, maxMatches: 5 }, () => {
+          console.log('Default settings installed.');
         });
       }
     });
@@ -68,18 +62,11 @@ async function launchFromClipboard(tab) {
     return;
   }
 
-  const patterns = await getPatterns();
-  if (!patterns || patterns.length === 0) {
-    showPopup('no-patterns');
-    return;
-  }
-
-  const matches = findMatchingPatterns(clipboardText, patterns);
+  const matches = await findMatchingPatterns(clipboardText);
 
   if (matches.length > 0) {
     for (const match of matches) {
-      const url = buildUrl(match.pattern, match.value);
-      chrome.tabs.create({ url });
+      chrome.tabs.create({ url: match.url });
     }
   } else {
     showPopup('no-match', clipboardText);
@@ -92,7 +79,7 @@ try {
   chrome.contextMenus.removeAll(() => {
     chrome.contextMenus.create({
       id: 'launch-selection',
-      title: 'Launch appropriate app for "%s"',
+      title: 'Smart Launch - "%s"',
       contexts: ['selection']
     });
   });
@@ -104,19 +91,11 @@ chrome.contextMenus.onClicked.addListener(async (info, tab) => {
   if (info.menuItemId !== 'launch-selection') return;
 
   const selection = (info.selectionText || '').trim();
-  const patterns = await getPatterns();
-
-  if (!patterns || patterns.length === 0) {
-    showPopup('no-patterns');
-    return;
-  }
-
-  const matches = findMatchingPatterns(selection, patterns);
+  const matches = await findMatchingPatterns(selection);
 
   if (matches.length > 0) {
     for (const match of matches) {
-      const url = buildUrl(match.pattern, match.value);
-      chrome.tabs.create({ url });
+      chrome.tabs.create({ url: match.url });
     }
   } else {
     showPopup('no-match', selection);

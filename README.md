@@ -9,6 +9,7 @@ A powerful Chrome extension that automatically launches URLs based on clipboard 
 - **Clipboard Pattern Matching**: Automatically detects patterns in your clipboard (like INC123456, PROJ-123)
 - **Context Menu Integration**: Right-click on selected text to launch URLs
 - **Multi-Launch**: Opens all matching URLs from a single piece of text
+- **Configurable Match Limit**: Set the maximum number of links (1-20) to open at once to prevent accidental overloads.
 - **Partial Matching**: Finds matches anywhere in the selected text or clipboard
 - **One-Click Launch**: Opens matched URLs in new tabs instantly
 - **Fully Customizable**: Configure your own URL patterns and templates

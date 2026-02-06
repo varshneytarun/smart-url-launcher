@@ -292,16 +292,24 @@ function resetPatterns() {
 }
 
 /**
- * Exports the current patterns to a JSON file.
+ * Exports the current configuration to a JSON file.
  */
-function exportPatterns() {
+function exportConfig() {
   const gathered = gatherPatterns();
-  const dataStr = JSON.stringify(gathered, null, 2);
+  const maxMatchesInput = document.getElementById('maxMatches');
+  const maxMatches = parseInt(maxMatchesInput.value, 10) || 5;
+
+  const config = {
+    patterns: gathered,
+    maxMatches: maxMatches
+  };
+
+  const dataStr = JSON.stringify(config, null, 2);
   const blob = new Blob([dataStr], { type: 'application/json' });
   const url = URL.createObjectURL(blob);
   const a = document.createElement('a');
   a.href = url;
-  a.download = 'url-launcher-patterns.json';
+  a.download = 'url-launcher-config.json';
   document.body.appendChild(a);
   a.click();
   document.body.removeChild(a);
@@ -310,9 +318,9 @@ function exportPatterns() {
 }
 
 /**
- * Imports patterns from a JSON file.
+ * Imports configuration from a JSON file.
  */
-function importPatterns() {
+function importConfig() {
   const input = document.createElement('input');
   input.type = 'file';
   input.accept = '.json';
@@ -324,27 +332,46 @@ function importPatterns() {
       const text = await file.text();
       const imported = JSON.parse(text);
       
-      if (!Array.isArray(imported)) {
-        showStatus('Invalid format: expected an array of patterns', 'error');
+      let importedPatterns = [];
+      let importedMaxMatches = null;
+
+      // Check for new config format vs old pattern-only array
+      if (Array.isArray(imported)) {
+        // Handle old format (array of patterns)
+        importedPatterns = imported;
+        showStatus('Legacy patterns imported. Max matches setting was not affected.', 'success');
+      } else if (imported && typeof imported === 'object' && Array.isArray(imported.patterns)) {
+        // Handle new format
+        importedPatterns = imported.patterns;
+        if (typeof imported.maxMatches === 'number' && imported.maxMatches >= 1 && imported.maxMatches <= 20) {
+          importedMaxMatches = imported.maxMatches;
+        }
+      } else {
+        showStatus('Invalid format: expected a configuration object or an array of patterns', 'error');
         return;
       }
-      
+
       // Validate imported patterns
-      const errors = validatePatterns(imported);
+      const errors = validatePatterns(importedPatterns);
       if (errors.length > 0) {
         showStatus('Validation errors in imported file:\n' + errors.slice(0, 3).join('\n'), 'error');
         return;
       }
       
       // Ensure all imported patterns have IDs
-      const withIds = imported.map(p => {
+      const withIds = importedPatterns.map(p => {
         if (!p.id) p.id = generateId();
         return p;
       });
       
-      chrome.storage.sync.set({ patterns: withIds }, () => {
-        patterns = withIds;
-        renderPatterns();
+      const newConfig = { patterns: withIds };
+      if (importedMaxMatches !== null) {
+        newConfig.maxMatches = importedMaxMatches;
+      }
+
+      chrome.storage.sync.set(newConfig, () => {
+        // Reload the entire configuration from storage to update the UI
+        loadConfig();
         showStatus('Configuration imported successfully!', 'success');
       });
     } catch (err) {
@@ -355,12 +382,12 @@ function importPatterns() {
 }
 
 /**
- * Loads patterns from Chrome storage and renders them.
+ * Loads all configuration from Chrome storage and populates the UI.
  */
-function loadPatterns() {
-  chrome.storage.sync.get(['patterns'], (result) => {
-    if (result.patterns && result.patterns.length > 0) {
-      // Ensure every stored pattern has a stable id
+function loadConfig() {
+  chrome.storage.sync.get({ patterns: [], maxMatches: 5 }, (result) => {
+    // Load patterns, ensuring each has a stable ID
+    if (result.patterns.length > 0) {
       patterns = result.patterns.map(p => {
         if (!p.id) p.id = generateId();
         return p;
@@ -369,14 +396,46 @@ function loadPatterns() {
       patterns = [...(globalThis.DEFAULT_PATTERNS || [])];
     }
     renderPatterns();
+
+    // Set the value for the max matches slider
+    const maxMatchesInput = document.getElementById('maxMatches');
+    const maxMatchesValue = document.getElementById('maxMatchesValue');
+    if (maxMatchesInput && maxMatchesValue) {
+      maxMatchesInput.value = result.maxMatches;
+      maxMatchesValue.textContent = result.maxMatches;
+    }
   });
 }
 
-// Event listeners
-document.getElementById('addPattern').addEventListener('click', addPattern);
-document.getElementById('exportPatterns').addEventListener('click', exportPatterns);
-document.getElementById('importPatterns').addEventListener('click', importPatterns);
-document.getElementById('resetPatterns').addEventListener('click', resetPatterns);
+/**
+ * Initializes the options page by loading config and setting up event listeners.
+ */
+function initializePage() {
+  loadConfig();
 
-// Initialize
-document.addEventListener('DOMContentLoaded', loadPatterns);
+  // General settings listeners
+  const maxMatchesInput = document.getElementById('maxMatches');
+  const maxMatchesValue = document.getElementById('maxMatchesValue');
+
+  if (maxMatchesInput && maxMatchesValue) {
+    maxMatchesInput.addEventListener('input', () => {
+      maxMatchesValue.textContent = maxMatchesInput.value;
+    });
+
+    maxMatchesInput.addEventListener('change', () => {
+      const value = parseInt(maxMatchesInput.value, 10);
+      chrome.storage.sync.set({ maxMatches: value }, () => {
+        showStatus('Max matches setting saved!', 'success');
+      });
+    });
+  }
+
+  // Main action listeners
+  document.getElementById('addPattern').addEventListener('click', addPattern);
+  document.getElementById('exportConfig').addEventListener('click', exportConfig);
+  document.getElementById('importConfig').addEventListener('click', importConfig);
+  document.getElementById('resetPatterns').addEventListener('click', resetPatterns);
+}
+
+// Initialize the page when the DOM is fully loaded
+document.addEventListener('DOMContentLoaded', initializePage);
