@@ -3,10 +3,10 @@
 ## 🚀 5-Minute Setup
 
 ### Step 1: Install the Extension
-1. Open Chrome and go to `chrome://extensions/`
-2. Enable "Developer mode" (toggle in top-right)
+1. Open Chrome/Edge and go to `chrome://extensions/` or `edge://extensions/`
+2. Enable "Developer mode" (toggle in top-right or left sidebar)
 3. Click "Load unpacked"
-4. Select the `url-launcher-extension` folder
+4. Select the `smart-url-launcher` folder
 5. You should see the extension icon in your toolbar
 
 ### Step 2: Configure Your Patterns

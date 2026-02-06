@@ -95,7 +95,7 @@ You have complete control over your data:
 
 ## Open Source
 This extension's source code is available for review, ensuring transparency in our privacy practices. You can view the code at:
-[https://github.com/tarunvarshney/url-launcher-extension](https://github.com/tarunvarshney/url-launcher-extension)
+[https://github.com/varshneytarun/smart-url-launcher](https://github.com/varshneytarun/smart-url-launcher)
 
 ## Contact
 If you have questions about this privacy policy or the extension's data practices, please open an issue on our GitHub repository.

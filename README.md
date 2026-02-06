@@ -24,15 +24,15 @@ A powerful Chrome extension that automatically launches URLs based on clipboard 
 1.  **Download or Clone** this repository to your local machine.
 2.  **Open the Chrome Extensions Page** by navigating to `chrome://extensions/`.
 3.  **Enable Developer Mode** using the toggle switch in the top-right corner.
-4.  **Load the Extension** by clicking "Load unpacked" and selecting the `url-launcher-extension` folder.
+4.  **Load the Extension** by clicking "Load unpacked" and selecting the `smart-url-launcher` folder.
 5.  **Pin the Extension**: Click the puzzle piece icon in the toolbar, find "Smart URL Launcher," and click the pin icon to keep it's icon pinnned on the toolbar. Alternatively, go to `chrome://extensions/` (into the extensions page), find "Smart URL Launcher," click Details, and check the "Pin to toolbar" option.
 
 ### From Source (Microsoft Edge)
 
 1.  **Download or Clone** this repository to your local machine.
 2.  **Open the Edge Extensions Page** by navigating to `edge://extensions/`.
-3.  **Enable Developer Mode** using the toggle switch in the bottom-left corner.
-4.  **Load the Extension** by clicking "Load unpacked" and selecting the `url-launcher-extension` folder.
+3.  **Enable Developer Mode** using the toggle switch in the left sidebar.
+4.  **Load the Extension** by clicking "Load unpacked" and selecting the `smart-url-launcher` folder.
 5.  **Pin the Extension**: Click the puzzle piece icon in the toolbar, find "Smart URL Launcher," and click the pin icon to keep it's icon pinnned on the toolbar.
 
 ## Usage
@@ -186,7 +186,7 @@ This extension:
 
 ### File Structure
 ```
-url-launcher-extension/
+smart-url-launcher/
 ├── manifest.json         # Extension configuration
 ├── background.js         # Background service worker
 ├── popup.html            # Extension popup interface
@@ -206,7 +206,7 @@ url-launcher-extension/
 ### Making Changes
 
 1. Edit the relevant files
-2. Go to `chrome://extensions/`
+2. Go to `chrome://extensions/` or `edge://extensions/`
 3. Click the reload icon on the extension card
 4. Test your changes
 
@@ -217,14 +217,6 @@ Feel free to submit issues and enhancement requests!
 ## License
 
 MIT License - Feel free to use and modify as needed.
-
-## Version History
-
-- **1.0.0** (2025-02-04)
-  - Initial release
-  - Pattern matching and URL launching
-  - Configurable patterns via options page
-  - Default ServiceNow and Jira patterns
 
 ## Support
 
