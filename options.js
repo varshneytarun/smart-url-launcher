@@ -259,23 +259,7 @@ function movePattern(index, direction) {
   renderPatterns();
 }
 
-/**
- * Saves all patterns to Chrome storage.
- */
-function savePatterns() {
-  const gathered = gatherPatterns();
-  const errors = validatePatterns(gathered);
-  
-  if (errors.length > 0) {
-    showStatus('Validation errors:\n' + errors.join('\n'), 'error');
-    return;
-  }
-  
-  chrome.storage.sync.set({ patterns: gathered }, () => {
-    patterns = gathered;
-    showStatus('Patterns saved successfully!', 'success');
-  });
-}
+
 
 /**
  * Resets all patterns to the default set.

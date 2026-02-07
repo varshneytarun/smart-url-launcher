@@ -54,16 +54,12 @@ A powerful Chrome extension that automatically launches URLs based on clipboard 
 
 ### Configuration
 
-1. **Click the extension icon**
-
-2. **Click "Configure Patterns"** to open the options page
-
-3. **Modify existing patterns** or **add new ones**:
-   - **Pattern Name**: A friendly name (e.g., "ServiceNow Incident")
-   - **Regular Expression**: The pattern to match (e.g., `INC\\d{7,}`)
-   - **URL Template**: The URL with `{value}` placeholder (e.g., `https://your-instance.service-now.com/nav_to.do?uri=incident.do?sysparm_query=number={value}`)
-
-4. **Click "Save All Changes"**
+1. **Click the extension icon** and select **"Configure Patterns"** to open the options page.
+2. **Modify, add, or delete patterns** as needed. All changes are **saved automatically** as soon as you click away from a field.
+   - **Pattern Name**: A friendly name (e.g., "ServiceNow Incident").
+   - **Regular Expression**: The pattern to match (e.g., `INC\\d{7,}`).
+   - **URL Template**: The URL with a `{value}` placeholder.
+3. Adjust the **"Max links to open"** slider to control how many tabs can be opened at once. This change is also saved automatically.
 
 ## Pattern Examples
 

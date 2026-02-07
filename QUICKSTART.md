@@ -10,19 +10,16 @@
 5. You should see the extension icon in your toolbar
 
 ### Step 2: Configure Your Patterns
-1. Click the extension icon
-2. Click "Configure Patterns"
-3. Update the default patterns with your actual URLs:
+1. Click the extension icon and select **"Configure Patterns"**.
+2. Update the default patterns with your actual URLs. Changes are **saved automatically** when you click away from a field.
 
    **For ServiceNow:**
-   - Change `your-instance` to your actual instance name
+   - Change `your-instance` to your actual instance name.
    - Example: `https://acme.service-now.com/nav_to.do?uri=incident.do?sysparm_query=number={value}`
 
    **For Jira:**
-   - Change `your-domain` to your Jira domain
+   - Change `your-domain` to your Jira domain.
    - Example: `https://acme.atlassian.net/browse/{value}`
-
-4. Click "Save All Changes"
 
 ### Step 3: Test It Out
 1. Copy a ticket number to your clipboard
