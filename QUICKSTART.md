@@ -22,15 +22,9 @@
    - Example: `https://acme.atlassian.net/browse/{value}`
 
 ### Step 3: Test It Out
-1. Copy a ticket number to your clipboard
-   - ServiceNow: `INC0123456`
-   - Jira: `PROJ-123`
-
-2. Click the extension icon
-
-3. Click "Read Clipboard & Launch"
-
-4. Your ticket should open in a new tab!
+1. Copy a ticket number to your clipboard (e.g., `INC0123456` or `PROJ-123`).
+2. **Click the extension icon** in your toolbar.
+3. If a match is found, the corresponding URL will open in a new tab instantly! If not, the popup will notify you.
 
 ## Common Configurations
 
