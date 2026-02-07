@@ -66,12 +66,7 @@ The extension requests permission to read clipboard content and access text you 
 - **How it's used**: Modern Chrome extensions require a temporary, invisible offscreen document to access the clipboard from a service worker. This allows the extension to read the clipboard without needing a visible popup window every time.
 - **Data handling**: This is a technical requirement for clipboard access and does not involve any extra data collection or storage.
 
-### `host_permissions` (`<all_urls>`)
-- **Why it's needed**: To enable the context menu on all websites and to open tabs for any URL you configure.
-- **How it's used**:
-  1. The `<all_urls>` permission is required for the right-click context menu to appear on any page you visit.
-  2. It also ensures that the extension can open a new tab to any URL you define in your patterns (e.g., `your-instance.service-now.com`, `your-domain.atlassian.net`, etc.).
-- **Data handling**: This permission does **not** allow the extension to read the content of web pages. It is used strictly for adding the context menu and opening tabs.
+
 
 ## Third-Party Services
 This extension does **NOT** use any third-party services, including:
