@@ -51,10 +51,6 @@ The extension requests permission to read clipboard content and access text you 
 - **How it's used**: Your configurations are stored locally using the browser's sync storage, allowing your settings to be consistent across devices where you're logged in.
 - **Data handling**: This data remains on your device or within your browser's sync account and is never accessed by us.
 
-### `tabs`
-- **Why it's needed**: To open new browser tabs for the URLs that match your patterns.
-- **How it's used**: When a pattern is matched, the extension creates a new tab to navigate to the specified URL.
-- **Data handling**: No data is stored or logged during this process.
 
 ### `contextMenus`
 - **Why it's needed**: To add the "Launch URL for..." option to the right-click menu.

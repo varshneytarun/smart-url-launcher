@@ -6,7 +6,6 @@
   "permissions": [
     "clipboardRead",
     "storage",
-    "tabs",
     "contextMenus",
     "offscreen"
   ],
