@@ -29,6 +29,13 @@ globalThis.DEFAULT_PATTERNS = [
     enabled: true
   },
   {
+    name: "ServiceNow Request Item",
+    pattern: "REQ\\d{7,}",
+    urlTemplate: "https://your-instance.service-now.com/nav_to.do?uri=sc_request_item.do?sysparm_query=number={value}",
+    id: 'snow-req-item',
+    enabled: true
+  },
+  {
     name: "ServiceNow Configuration Item",
     pattern: "CI\\d{7,}",
     urlTemplate: "https://your-instance.service-now.com/nav_to.do?uri=cmdb_ci.do?sysparm_query=number={value}",

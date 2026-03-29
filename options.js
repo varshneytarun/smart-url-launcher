@@ -44,10 +44,10 @@ function createPatternElement(pattern, index) {
     <td><input type="text" class="pattern-url" value="${escapeHtml(pattern.urlTemplate)}" placeholder="https://example.com/{value}"></td>
     <td>
       <div class="controls">
-        <button class="copy-pattern secondary" title="Duplicate">📋</button>
-        <button class="move-up secondary" ${index === 0 ? 'disabled' : ''} title="Move up">↑</button>
-        <button class="move-down secondary" ${index === patterns.length - 1 ? 'disabled' : ''} title="Move down">↓</button>
-        <button class="delete-pattern danger" title="Delete">✕</button>
+        <button class="copy-pattern btn-secondary btn-sm" title="Duplicate this pattern">Copy</button>
+        <button class="move-up btn-secondary btn-sm" ${index === 0 ? 'disabled' : ''} title="Move pattern up">↑</button>
+        <button class="move-down btn-secondary btn-sm" ${index === patterns.length - 1 ? 'disabled' : ''} title="Move pattern down">↓</button>
+        <button class="delete-pattern btn-danger btn-sm" title="Delete this pattern">Delete</button>
       </div>
     </td>
   `;

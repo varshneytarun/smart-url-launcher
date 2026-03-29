@@ -2,179 +2,489 @@
 <html>
 <head>
   <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Smart URL Launcher - Options</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
   <style>
+    * {
+      box-sizing: border-box;
+    }
+
     :root {
-      --primary-color: #000000;
-      --primary-hover: #0056b3;
-      --danger-color: #dc3545;
-      --danger-hover: #c82333;
-      --secondary-color: #6c757d;
-      --secondary-hover: #5a6268;
-      --light-gray: #f8f9fa;
-      --medium-gray: #e9ecef;
-      --dark-gray: #6c757d;
-      --text-color: #212529;
-      --border-color: #dee2e6;
-      --background-color: #ffffff;
-      --font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
-      --monospace-font: 'SFMono-Regular', Consolas, 'Liberation Mono', Menlo, Courier, monospace;
+      /* Material Design Color System */
+      --primary: #1976d2;
+      --primary-dark: #1565c0;
+      --primary-light: #42a5f5;
+      --error: #d32f2f;
+      --error-light: #ef5350;
+      --success: #388e3c;
+      --surface: #ffffff;
+      --surface-variant: #f5f5f5;
+      --bg: #fafafa;
+      --text-primary: #212121;
+      --text-secondary: #666666;
+      --divider: #e0e0e0;
+      --shadow-1: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);
+      --shadow-2: 0 3px 6px rgba(0,0,0,0.15), 0 2px 4px rgba(0,0,0,0.12);
+      --shadow-3: 0 10px 20px rgba(0,0,0,0.15), 0 3px 6px rgba(0,0,0,0.10);
+      --shadow-4: 0 15px 25px rgba(0,0,0,0.15), 0 5px 10px rgba(0,0,0,0.05);
+    }
+
+    html, body {
+      height: 100%;
     }
 
     body {
-      font-family: var(--font-family);
-      background-color: var(--light-gray);
-      color: var(--text-color);
+      font-family: 'Roboto', sans-serif;
+      background: linear-gradient(135deg, var(--bg) 0%, #f0f0f0 100%);
+      color: var(--text-primary);
       margin: 0;
-      padding: 2rem;
+      padding: 0;
+      font-size: 14px;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+    }
+
+    /* Header */
+    .app-header {
+      background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+      color: white;
+      padding: 1rem 1.25rem;
+      box-shadow: var(--shadow-2);
+      margin-bottom: 1rem;
     }
 
     h1 {
-      font-size: 2rem;
+      font-size: 1.5rem;
+      font-weight: 700;
+      margin: 0 0 0.25rem 0;
+      letter-spacing: -0.5px;
+    }
+
+    .page-subtitle {
+      font-size: 0.85rem;
+      font-weight: 400;
+      margin: 0;
+      opacity: 0.95;
+      line-height: 1.4;
+    }
+
+    main {
+      max-width: 100%;
+      width: 100%;
+      margin: 0;
+      padding: 0 2.5rem 2.5rem;
+      display: flex;
+      gap: 0;
+      min-height: calc(100vh - 200px);
+    }
+
+    #statusMessage {
+      position: fixed;
+      top: 130px;
+      left: 2.5rem;
+      right: 2.5rem;
+      z-index: 500;
+    }
+
+    /* Vertical Tab Navigation */
+    .tab-nav {
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
+      min-width: 100px;
+      padding: 1.5rem 0.75rem;
+      background: var(--surface);
+      box-shadow: var(--shadow-1);
+      height: fit-content;
+      position: sticky;
+      top: 2rem;
+      border-radius: 8px 0 0 8px;
+      border-right: 2px solid var(--primary);
+    }
+
+    .tab-nav button {
+      padding: 1rem 0.5rem;
+      border: 2px solid transparent;
+      background: var(--surface-variant);
+      color: var(--text-primary);
+      border-radius: 4px;
+      cursor: pointer;
+      font-size: 0.8rem;
       font-weight: 600;
-      margin-bottom: 0.5rem;
+      transition: all 0.2s ease;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 60px;
+      line-height: 1.2;
+      text-align: center;
+      padding: 0.75rem;
     }
 
-    .subtitle {
-      font-size: 1.1rem;
-      color: var(--dark-gray);
-      margin-bottom: 2rem;
+    .tab-nav button:hover {
+      background: #eeeeee;
+      color: var(--text-primary);
     }
 
-    .container {
-      background-color: var(--background-color);
-      border-radius: 8px;
+    .tab-nav button:focus-visible {
+      outline: 3px solid var(--primary);
+      outline-offset: 2px;
+    }
+
+    .tab-nav button.active {
+      background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+      color: white;
+      border-color: var(--primary);
+    }
+
+    /* Tab Content Container */
+    .tab-content-wrapper {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      gap: 2rem;
+      background: var(--surface);
       padding: 2rem;
-      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+      border-radius: 0 8px 8px 0;
+      box-shadow: var(--shadow-1);
+      margin-left: -2px;
     }
 
+    /* Individual Tab Panels - keep in DOM and avoid layout reflow on show/hide */
+    .tab-content-wrapper {
+      position: relative; /* for absolutely positioned panels */
+    }
+
+    .tab-panel {
+      display: block; /* always in DOM */
+      position: relative;
+      inset: auto;
+      padding: 0; /* keep top-level padding from wrapper */
+      background: transparent;
+      opacity: 0;
+      pointer-events: none;
+      transform: translateY(6px);
+      height: 0;
+      overflow: hidden;
+      transition: opacity 180ms ease, transform 180ms ease, height 180ms ease;
+    }
+
+    .tab-panel.active {
+      opacity: 1;
+      pointer-events: auto;
+      transform: none;
+      height: auto;
+      overflow: visible;
+    }
+
+    .guide-sidebar {
+      background: #e3f2fd;
+      border-left: 4px solid var(--primary);
+      padding: 1.25rem;
+      border-radius: 4px;
+      height: fit-content;
+      position: sticky;
+      top: 2rem;
+    }
+
+    .guide-content {
+      margin: 0;
+    }
+
+    .guide-content ul {
+      margin: 0;
+      padding-left: 1.5rem;
+    }
+
+    .guide-content li {
+      margin-bottom: 1rem;
+      line-height: 1.8;
+      color: var(--text-secondary);
+      font-size: 0.95rem;
+    }
+
+    .guide-content code {
+      background: #f5f5f5;
+      padding: 0.25rem 0.6rem;
+      border-radius: 3px;
+      font-family: 'Courier New', monospace;
+      font-size: 0.85rem;
+      color: #c62828;
+      box-shadow: inset 0 0 0 1px var(--divider);
+    }
+
+    .guide-sidebar h3 {
+      margin: 0 0 0.75rem 0;
+      font-size: 1rem;
+      color: var(--primary);
+    }
+
+    /* Cards & Sections */
+    .card {
+      background: var(--surface);
+      border-radius: 8px;
+      box-shadow: var(--shadow-1);
+      margin-bottom: 2rem;
+      transition: box-shadow 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+      overflow: hidden;
+    }
+
+    .card:hover {
+      box-shadow: var(--shadow-2);
+    }
+
+    .card-header {
+      padding: 1.75rem 1.75rem 1rem;
+      border-bottom: 1px solid var(--divider);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .card-footer {
+      padding: 1rem 1.75rem 1.5rem;
+      border-top: 1px solid var(--divider);
+      background: #fafafa;
+    }
+
+    .patterns-table-wrapper {
+      max-height: 60vh;
+      overflow: auto;
+      width: 100%;
+    }
+
+    .patterns-table-wrapper table {
+      width: 100%;
+      border-collapse: collapse;
+    }
+
+    .patterns-table-wrapper table thead th {
+      position: sticky;
+      top: 0;
+      background: white;
+      z-index: 1;
+      border-bottom: 2px solid var(--primary);
+    }
+
+    .patterns-table-wrapper table th,
+    .patterns-table-wrapper table td {
+      white-space: nowrap;
+    }
+
+
+    .card-header h2 {
+      margin: 0;
+      font-size: 1.25rem;
+      font-weight: 500;
+      letter-spacing: 0.2px;
+    }
+
+    .card-content {
+      padding: 1.75rem;
+    }
+
+    /* Typography */
+    h2 {
+      margin: 0;
+      font-size: 1.25rem;
+      font-weight: 500;
+    }
+
+    h3 {
+      margin: 0 0 1rem 0;
+      font-size: 1.1rem;
+      font-weight: 500;
+      color: var(--text-primary);
+    }
+
+    /* Tables */
     table {
       width: 100%;
       border-collapse: collapse;
-      margin-bottom: 2rem;
+      background: var(--surface);
     }
 
     thead {
-      border-bottom: 2px solid var(--border-color);
+      background: var(--surface-variant);
+      border-bottom: 2px solid var(--divider);
     }
 
     th {
-      padding: 1rem;
+      padding: 1.25rem;
       text-align: left;
-      font-weight: 600;
+      font-weight: 500;
       font-size: 0.875rem;
       text-transform: uppercase;
       letter-spacing: 0.5px;
-      color: var(--dark-gray);
+      color: var(--text-secondary);
     }
 
     tbody tr {
-      border-bottom: 1px solid var(--border-color);
+      border-bottom: 1px solid var(--divider);
       transition: background-color 0.2s ease;
     }
 
     tbody tr:hover {
-      background-color: #f1f3f5;
+      background-color: #fafafa;
     }
 
     td {
-      padding: 1rem;
+      padding: 0.5rem;
       vertical-align: middle;
+    }
+
+    /* Form Elements */
+    input[type="text"],
+    input[type="number"],
+    textarea,
+    select {
+      font-family: 'Roboto', sans-serif;
+      font-size: 0.95rem;
+      padding: 0.75rem 1rem;
+      border: 1px solid var(--divider);
+      border-radius: 4px;
+      background: white;
+      transition: border-color 0.2s, box-shadow 0.2s;
+    }
+
+    input[type="text"]:focus,
+    input[type="number"]:focus,
+    textarea:focus,
+    select:focus,
+    input[type="checkbox"]:focus-visible {
+      outline: none;
+      border-color: var(--primary);
+      box-shadow: 0 0 0 3px rgba(25, 118, 210, 0.1);
     }
 
     td input[type="text"] {
       width: 100%;
-      padding: 0.5rem 0.75rem;
-      border: 1px solid var(--border-color);
-      border-radius: 6px;
+    }
+
+    .pattern-input {
+      font-family: 'Courier New', monospace;
       font-size: 0.9rem;
-      transition: border-color 0.2s ease, box-shadow 0.2s ease;
     }
 
-    td input[type="text"]:focus {
-      outline: none;
-      border-color: var(--primary-color);
-      box-shadow: 0 0 0 3px rgba(0, 123, 255, 0.15);
-    }
-
-    td input[type="text"].pattern-input {
-      font-family: var(--monospace-font);
-    }
-
-    td input[type="checkbox"] {
+    input[type="checkbox"] {
       width: 1.25rem;
       height: 1.25rem;
       cursor: pointer;
+      accent-color: var(--primary);
     }
 
+    /* Buttons */
     button {
-      font-family: var(--font-family);
-      font-weight: 600;
+      font-family: 'Roboto', sans-serif;
+      font-size: 0.95rem;
+      font-weight: 500;
+      padding: 0.75rem 1.5rem;
       border: none;
-      padding: 0.6rem 1.2rem;
-      border-radius: 6px;
+      border-radius: 4px;
       cursor: pointer;
-      transition: all 0.2s ease;
-      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+      transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.5rem;
+      position: relative;
+      overflow: hidden;
+      type: button;
     }
 
-    button:hover {
+    button:focus-visible {
+      outline: 3px solid var(--primary);
+      outline-offset: 2px;
+    }
+
+    button::before {
+      content: '';
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      width: 20px;
+      height: 20px;
+      border-radius: 50%;
+      background: rgba(255, 255, 255, 0.3);
+      transform: translate(-50%, -50%) scale(0);
+      transition: transform 0.5s ease-out;
+      pointer-events: none;
+    }
+
+    button:active::before {
+      transform: translate(-50%, -50%) scale(8);
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      button::before {
+        transition: none;
+      }
+      * {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+      }
+    }
+
+    button:disabled {
+      opacity: 0.5;
+      cursor: not-allowed;
+    }
+
+    /* Button Variants */
+    .btn-primary {
+      background: var(--primary);
+      color: white;
+      box-shadow: var(--shadow-1);
+    }
+
+    .btn-primary:hover {
+      box-shadow: var(--shadow-2);
       transform: translateY(-2px);
-      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
     }
 
-    button:active {
-      transform: translateY(0);
-      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+    .btn-secondary {
+      background: var(--surface-variant);
+      color: var(--text-primary);
+      border: 1px solid var(--divider);
+    }
+
+    .btn-secondary:hover {
+      background: #eeeeee;
+    }
+
+    .btn-danger {
+      background: var(--error);
+      color: white;
+      box-shadow: var(--shadow-1);
+    }
+
+    .btn-danger:hover {
+      box-shadow: var(--shadow-2);
+      transform: translateY(-2px);
+    }
+
+    .btn-sm {
+      padding: 0.5rem 1rem;
+      font-size: 0.85rem;
     }
 
     #addPattern {
-      background-color: var(--primary-color);
-      color: white;
-    }
-    #addPattern:hover {
-      background-color: var(--primary-hover);
+      margin-left: auto;
     }
 
-    button.danger {
-      background-color: var(--danger-color);
-      color: white;
-    }
-    button.danger:hover {
-      background-color: var(--danger-hover);
-    }
-
-    button.secondary {
-      background-color: var(--secondary-color);
-      color: white;
-      padding: 0.3rem 0.6rem;
-      font-size: 0.8rem;
-    }
-    button.secondary:hover {
-      background-color: var(--secondary-hover);
-    }
-    
-    .controls button {
-      padding: 0.5rem 0.8rem;
-      font-size: 0.875rem;
-    }
-
-    .header-row {
+    /* Layouts */
+    .button-group {
       display: flex;
-      justify-content: space-between;
-      align-items: center;
-      margin-bottom: 1.5rem;
+      gap: 1rem;
     }
-
-    .header-row h2 {
-      margin: 0;
-      font-size: 1.5rem;
-    }
-
-    th.col-enabled { width: 5%; }
-    th.col-name { width: 15%; }
-    th.col-pattern { width: 10%; }
-    th.col-actions { width: 15%; }
 
     .actions {
       display: flex;
@@ -183,101 +493,65 @@
       gap: 1rem;
       margin-top: 2rem;
       padding-top: 1.5rem;
-      border-top: 1px solid var(--border-color);
+      border-top: 1px solid var(--divider);
     }
 
-    .button-group {
+    .controls {
       display: flex;
-      gap: 1rem;
-    }
-    
-    .button-group button {
-      background-color: var(--secondary-color);
-      color: white;
-    }
-    .button-group button:hover {
-      background-color: var(--secondary-hover);
+      gap: 0.5rem;
     }
 
+    .controls button {
+      padding: 0.55rem 0.8rem;
+      font-size: 0.8rem;
+    }
+
+    /* Messages */
     .status-message {
-      padding: 1rem;
-      border-radius: 6px;
+      padding: 1rem 1.5rem;
+      border-radius: 4px;
       margin-bottom: 1.5rem;
-      font-size: 0.9rem;
       display: none;
-      border: 1px solid transparent;
+      animation: slideIn 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+      font-weight: 500;
+    }
+
+    @keyframes slideIn {
+      from {
+        transform: translateY(-20px);
+        opacity: 0;
+      }
+      to {
+        transform: translateY(0);
+        opacity: 1;
+      }
     }
 
     .status-message.success {
-      background-color: #d4edda;
-      color: #155724;
-      border-color: #c3e6cb;
+      background: #c8e6c9;
+      color: #1b5e20;
+      border-left: 4px solid var(--success);
     }
 
     .status-message.error {
-      background-color: #f8d7da;
-      color: #721c24;
-      border-color: #f5c6cb;
+      background: #ffcdd2;
+      color: #b71c1c;
+      border-left: 4px solid var(--error);
     }
 
-    @keyframes highlight-and-fade {
-      0% { background-color: #d4edda; }
-      100% { background-color: transparent; }
-    }
-
-    .row-saved {
-      animation: highlight-and-fade 1.5s ease-out;
-    }
-
-    .example-box {
-      background-color: #f1f3f5;
-      border-left: 4px solid var(--primary-color);
-      padding: 1.5rem;
-      margin-top: 2rem;
-      border-radius: 6px;
-    }
-
-    .example-box h3 {
-      margin: 0 0 1rem 0;
-      font-size: 1.1rem;
-      color: var(--primary-color);
-    }
-
-    .example-box code {
-      background-color: var(--medium-gray);
-      padding: 0.2rem 0.4rem;
-      border-radius: 4px;
-      font-family: var(--monospace-font);
-      font-size: 0.85rem;
-    }
-
-    .example-box ul {
-      margin: 0;
-      padding-left: 1.5rem;
-    }
-
-    .example-box li {
-      margin-bottom: 0.5rem;
-      font-size: 0.9rem;
-    }
-
-    .general-settings-table {
-      margin-bottom: 2rem;
-      border-bottom: 1px solid var(--border-color);
-    }
-
+    /* Slider */
     .slider-container {
       display: flex;
       align-items: center;
-      gap: 1rem;
+      gap: 1.5rem;
     }
 
     input[type="range"] {
       -webkit-appearance: none;
       appearance: none;
-      width: 200px;
-      height: 8px;
-      background: var(--medium-gray);
+      width: 250px;
+      height: 6px;
+      background: #e0e0e0;
       border-radius: 5px;
       outline: none;
       cursor: pointer;
@@ -286,103 +560,299 @@
     input[type="range"]::-webkit-slider-thumb {
       -webkit-appearance: none;
       appearance: none;
-      width: 20px;
-      height: 20px;
-      background: var(--primary-color);
+      width: 22px;
+      height: 22px;
+      background: var(--primary);
       border-radius: 50%;
       cursor: pointer;
-      transition: background-color 0.2s ease;
+      box-shadow: var(--shadow-1);
+      transition: all 0.2s ease;
+    }
+
+    input[type="range"]::-webkit-slider-thumb:hover {
+      box-shadow: var(--shadow-3);
+      transform: scale(1.15);
     }
 
     input[type="range"]::-moz-range-thumb {
-      width: 20px;
-      height: 20px;
-      background: var(--primary-color);
+      width: 22px;
+      height: 22px;
+      background: var(--primary);
+      border: none;
       border-radius: 50%;
       cursor: pointer;
-      transition: background-color 0.2s ease;
-    }
-    
-    input[type="range"]:hover::-webkit-slider-thumb {
-      background: var(--primary-hover);
-    }
-
-    input[type="range"]:hover::-moz-range-thumb {
-      background: var(--primary-hover);
+      box-shadow: var(--shadow-1);
+      transition: all 0.2s ease;
     }
 
     .slider-value {
       font-weight: 600;
-      font-size: 1rem;
-      min-width: 25px;
+      font-size: 1.1rem;
+      color: var(--primary);
+      min-width: 35px;
       text-align: center;
-      color: var(--primary-color);
     }
+
+    /* Tooltip */
+    [data-tooltip] {
+      position: relative;
+      cursor: help;
+      border-bottom: 1px dotted var(--primary);
+    }
+
+    [data-tooltip]:hover::after {
+      content: attr(data-tooltip);
+      position: absolute;
+      bottom: 125%;
+      left: 50%;
+      transform: translateX(-50%);
+      background: var(--text-primary);
+      color: white;
+      padding: 0.75rem 1rem;
+      border-radius: 4px;
+      font-size: 0.85rem;
+      word-wrap: break-word;
+      max-width: 200px;
+      white-space: normal;
+      z-index: 1000;
+      box-shadow: var(--shadow-3);
+      animation: fadeIn 0.2s ease;
+    }
+
+    [data-tooltip]:hover::before {
+      content: '';
+      position: absolute;
+      bottom: 120%;
+      left: 50%;
+      transform: translateX(-50%);
+      border: 5px solid transparent;
+      border-top-color: var(--text-primary);
+      z-index: 1000;
+      animation: fadeIn 0.2s ease;
+    }
+
+
+    /* Modal */
+    #confirmModal {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: rgba(0, 0, 0, 0.4);
+      z-index: 1100;
+      animation: fadeIn 0.2s ease;
+    }
+
+    #confirmModal:not(.hidden) {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    #confirmModal.hidden {
+      display: none;
+    }
+
+    #confirmModal > div {
+      background: white;
+      border-radius: 8px;
+      box-shadow: var(--shadow-4);
+      max-width: 500px;
+      padding: 2rem;
+      animation: scaleIn 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    @keyframes scaleIn {
+      from {
+        opacity: 0;
+        transform: scale(0.9);
+      }
+      to {
+        opacity: 1;
+        transform: scale(1);
+      }
+    }
+
+    #confirmModal h3 {
+      font-size: 1.25rem;
+      margin: 0 0 1rem 0;
+      color: var(--text-primary);
+    }
+
+    #confirmModal p {
+      margin: 0 0 1.75rem 0;
+      color: var(--text-secondary);
+      line-height: 1.8;
+    }
+
+    #confirmModal > div > div {
+      display: flex;
+      gap: 1rem;
+      justify-content: flex-end;
+    }
+
+    #confirmCancel,
+    #confirmReset {
+      margin: 0;
+    }
+
+    /* Column widths */
+    th.col-enabled { width: 8%; }
+    th.col-name { width: 18%; }
+    th.col-pattern { width: 12%; }
+    th.col-url { width: 44%; }
+    th.col-actions { width: 18%; }
+
+    /* General Settings */
+    .general-settings-table {
+      margin-bottom: 0;
+    }
+
+    .general-settings-table td {
+      padding: 0.65rem 0.75rem;
+      vertical-align: middle;
+    }
+
+    .general-settings-table td:first-child {
+      vertical-align: middle;
+      width: auto;
+    }
+
+    .setting-label strong {
+      display: block;
+      margin-bottom: 0.1rem;
+      color: var(--text-primary);
+      font-weight: 500;
+      font-size: 0.9rem;
+    }
+
+    .setting-description {
+      font-size: 0.75rem;
+      color: var(--text-secondary);
+      margin-top: 0.05rem;
+      line-height: 1.3;
+    }
+
   </style>
 </head>
 <body>
-  <h1>🚀 Smart URL Launcher Configuration</h1>
-  <p class="subtitle">Define patterns to automatically launch URLs from clipboard content</p>
-  
-  <div class="container">
-    <div id="statusMessage" class="status-message"></div>
+  <div class="app-header">
+    <h1>🚀 Smart URL Launcher</h1>
+    <p class="page-subtitle">Configure patterns to automatically launch URLs from clipboard content</p>
+  </div>
 
-    <div class="header-row">
-      <h2>General Settings</h2>
-    </div>
-    <table class="general-settings-table">
-      <tbody>
-        <tr>
-          <td class="subtitle">
-            <label for="maxMatches">Max links to open per match</label>
-          </td>
-          <td class="slider-container">
-            <input type="range" id="maxMatches" min="1" max="20" step="1">
-            <span id="maxMatchesValue" class="slider-value">5</span>
-          </td>
-        </tr>
-      </tbody>
-    </table>
-    
-    <div class="header-row">
-      <h2>URL Patterns</h2>
-      <button id="addPattern">➕ Add Pattern</button>
-    </div>
-    
-    <table>
-      <thead>
-        <tr>
-          <th class="col-enabled">Enabled</th>
-          <th class="col-name">Name</th>
-          <th class="col-pattern">Pattern</th>
-          <th>URL Template</th>
-          <th class="col-actions">Actions</th>
-        </tr>
-      </thead>
-      <tbody id="patternsList"></tbody>
-    </table>
-    
-    <div class="actions">
-      <div class="button-group">
-        <button id="exportConfig">⏬ Export Configuration</button>
-        <button id="importConfig">🔃 Import Configuration</button>
+  <main>
+    <div id="statusMessage" class="status-message" role="status" aria-live="polite" aria-atomic="true"></div>
+
+    <!-- Vertical Tab Navigation -->
+    <nav class="tab-nav" role="tablist">
+      <button type="button" class="tab-btn active" data-tab="patterns" role="tab" aria-selected="true" aria-controls="patterns">URL<br>Patterns</button>
+      <button type="button" class="tab-btn" data-tab="settings" role="tab" aria-selected="false" aria-controls="settings">Settings</button>
+      <button type="button" class="tab-btn" data-tab="guide" role="tab" aria-selected="false" aria-controls="guide">Guide</button>
+    </nav>
+
+    <!-- Tab Content -->
+    <div class="tab-content-wrapper">
+      
+      <!-- Tab 1: URL Patterns -->
+      <div id="patterns" class="tab-panel active" role="tabpanel" aria-labelledby="patterns-btn">
+        <div class="card patterns-card">
+          <div class="card-header">
+            <h2 id="patterns-btn">URL Patterns</h2>
+            <button id="addPattern" class="btn-primary btn-sm" type="button">+ Add Pattern</button>
+          </div>
+          <div class="card-content patterns-table-wrapper" style="padding: 0;">
+            <table>
+              <thead>
+                <tr>
+                  <th class="col-enabled">Enabled</th>
+                  <th class="col-name">Name</th>
+                  <th class="col-pattern">Pattern</th>
+                  <th class="col-url">URL Template</th>
+                  <th class="col-actions">Actions</th>
+                </tr>
+              </thead>
+              <tbody id="patternsList"></tbody>
+            </table>
+          </div>
+          <div class="card-footer">
+            <div class="actions">
+              <div class="button-group">
+                <button id="exportConfig" class="btn-secondary">Download Config</button>
+                <button id="importConfig" class="btn-secondary">Import Config</button>
+              </div>
+              <button id="resetPatterns" class="btn-danger" data-tooltip="Restore default patterns">Reset Defaults</button>
+            </div>
+          </div>
+        </div>
       </div>
-      <button id="resetPatterns" class="danger">Reset to Defaults</button>
+
+      <!-- Tab 2: Settings -->
+      <div id="settings" class="tab-panel" role="tabpanel" aria-labelledby="settings-btn">
+        <div class="card">
+          <div class="card-header">
+            <h2 id="settings-btn">General Settings</h2>
+          </div>
+          <div class="card-content">
+            <table class="general-settings-table">
+              <tbody>
+                <tr>
+                  <td>
+                    <div class="setting-label">
+                      <strong>Max links per match</strong>
+                    </div>
+                    <p class="setting-description">Safety limit to prevent too many tabs</p>
+                  </td>
+                  <td class="slider-container" style="white-space: nowrap;">
+                    <input type="range" id="maxMatches" min="1" max="20" step="1" aria-label="Maximum number of URLs to open in one action">
+                    <span id="maxMatchesValue" class="slider-value">5</span>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+
+      <!-- Tab 3: Quick Guide -->
+      <div id="guide" class="tab-panel" role="tabpanel" aria-labelledby="guide-btn">
+        <div class="card">
+          <div class="card-header">
+            <h2 id="guide-btn">Quick Guide</h2>
+          </div>
+          <div class="card-content">
+            <div class="guide-content">
+              <ul>
+                <li><strong>Pattern:</strong> Regular expression. Example: <code>INC\\d{7,}</code></li>
+                <li><strong>URL:</strong> Template with <code>{value}</code>. Example: <code>https://ex.com/{value}</code></li>
+                <li><strong>ServiceNow:</strong> <code>INC\\d{7,}</code> → <code>https://instance.service-now.com/nav_to.do?uri=incident.do?sysparm_query=number={value}</code></li>
+                <li><strong>Jira:</strong> <code>[A-Z]{2,}-\\d+</code> → <code>https://domain.atlassian.net/browse/{value}</code></li>
+                <li><strong>GitHub:</strong> <code>#\\d+</code> → <code>https://github.com/owner/repo/issues/{value}</code></li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+
     </div>
-    
-    <div class="example-box">
-      <h3>Pattern Examples & Tips</h3>
-      <ul>
-        <li><strong>Pattern:</strong> Use regular expressions (without delimiters). Example: <code>INC\\d{7,}</code> matches INC followed by 7+ digits</li>
-        <li><strong>URL Template:</strong> Use <code>{value}</code> as placeholder. Example: <code>https://example.com/ticket/{value}</code></li>
-        <li><strong>ServiceNow Incident:</strong> Pattern: <code>INC\\d{7,}</code> → URL: <code>https://your-instance.service-now.com/nav_to.do?uri=incident.do?sysparm_query=number={value}</code></li>
-        <li><strong>Jira:</strong> Pattern: <code>[A-Z]{2,}-\\d+</code> → URL: <code>https://your-domain.atlassian.net/browse/{value}</code></li>
-        <li><strong>GitHub Issue:</strong> Pattern: <code>#\\d+</code> → URL: <code>https://github.com/owner/repo/issues/{value}</code></li>
-      </ul>
+  </main>
+
+  <!-- Confirmation Modal -->
+  <div id="confirmModal" class="hidden" role="dialog" aria-labelledby="confirmTitle" aria-modal="true">
+    <div>
+      <h3 id="confirmTitle">Reset to Default Patterns?</h3>
+      <p>This will delete all your patterns and restore the default ones. This action cannot be undone.</p>
+      <div>
+        <button id="confirmCancel" class="btn-secondary" type="button">Cancel</button>
+        <button id="confirmReset" class="btn-danger" type="button">Reset Patterns</button>
+      </div>
     </div>
   </div>
-  
+
   <script src="defaults.js"></script>
   <script src="options.js"></script>
+  <script src="options-tabs.js"></script>
 </body>
 </html>
