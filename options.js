@@ -419,6 +419,31 @@ function initializePage() {
   document.getElementById('exportConfig').addEventListener('click', exportConfig);
   document.getElementById('importConfig').addEventListener('click', importConfig);
   document.getElementById('resetPatterns').addEventListener('click', resetPatterns);
+
+  // Keyboard shortcut settings listener
+  const openShortcutsBtn = document.getElementById('openShortcutsBtn');
+  const shortcutsMessage = document.getElementById('shortcutsMessage');
+
+  function showShortcutsMessage(text, isError = false) {
+    if (shortcutsMessage) {
+      shortcutsMessage.textContent = text;
+      shortcutsMessage.style.color = isError ? 'var(--error)' : 'var(--success)';
+      shortcutsMessage.style.display = 'block';
+      setTimeout(() => {
+        shortcutsMessage.style.display = 'none';
+      }, 3000);
+    }
+  }
+
+  if (openShortcutsBtn) {
+    openShortcutsBtn.addEventListener('click', () => {
+      chrome.tabs.create({ url: 'chrome://extensions/shortcuts' }, () => {
+        if (chrome.runtime.lastError) {
+          showShortcutsMessage('Unable to open. Please manually navigate to chrome://extensions/shortcuts', true);
+        }
+      });
+    });
+  }
 }
 
 // Initialize the page when the DOM is fully loaded

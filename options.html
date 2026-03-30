@@ -812,6 +812,14 @@
                 </tr>
               </tbody>
             </table>
+            <div style="margin-top: 1.5rem; padding-top: 1rem; border-top: 1px solid var(--divider);">
+              <div class="setting-label">
+                <strong>Keyboard Shortcut</strong>
+              </div>
+              <p class="setting-description" style="margin-bottom: 0.75rem;">Customize the keyboard shortcut to trigger the extension</p>
+              <button type="button" id="openShortcutsBtn" class="btn-secondary btn-sm" style="margin-top: 0.5rem;">Open Keyboard Shortcuts</button>
+              <p id="shortcutsMessage" class="setting-description" style="margin-top: 0.5rem; display: none;"></p>
+            </div>
           </div>
         </div>
       </div>
@@ -831,6 +839,9 @@
                 <li><strong>Jira:</strong> <code>[A-Z]{2,}-\\d+</code> → <code>https://domain.atlassian.net/browse/{value}</code></li>
                 <li><strong>GitHub:</strong> <code>#\\d+</code> → <code>https://github.com/owner/repo/issues/{value}</code></li>
               </ul>
+              <h3 style="margin-top: 1.5rem; color: var(--primary);">Keyboard Shortcut</h3>
+              <p>You can use the configured keyboard shortcut to trigger the extension from anywhere. Useful when you have copied patterns from a document or webpage.</p>
+              <p>You can customize this from the <strong>Settings tab → Keyboard Shortcut</strong>.</p>
             </div>
           </div>
         </div>

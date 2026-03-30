@@ -3,11 +3,19 @@
 
 chrome.runtime.onMessage.addListener((msg, sender, sendResponse) => {
   if (msg.command === 'read-clipboard') {
-    const container = document.getElementById('clipboard-container');
-    container.value = '';
-    container.focus();
-    document.execCommand('paste');
-    const clipboardText = container.value;
-    sendResponse(clipboardText);
+    // Use modern Clipboard API - async and reliable
+    navigator.clipboard.readText().then((clipboardText) => {
+      sendResponse(clipboardText || '');
+    }).catch((err) => {
+      console.error('Failed to read clipboard:', err);
+      // Fallback to legacy method for compatibility
+      const container = document.getElementById('clipboard-container');
+      container.value = '';
+      container.focus();
+      document.execCommand('paste');
+      sendResponse(container.value || '');
+    });
+    // Return true to indicate async response
+    return true;
   }
 });
