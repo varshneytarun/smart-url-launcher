@@ -216,6 +216,9 @@ function deletePattern(index) {
   if (confirm('Are you sure you want to delete this pattern?')) {
     patterns.splice(index, 1);
     renderPatterns();
+    chrome.storage.sync.set({ patterns }, () => {
+      showStatus('Pattern deleted', 'success');
+    });
   }
 }
 
@@ -257,6 +260,9 @@ function movePattern(index, direction) {
   patterns[newIndex] = temp;
   
   renderPatterns();
+  chrome.storage.sync.set({ patterns }, () => {
+    showStatus('Pattern order saved', 'success');
+  });
 }
 
 

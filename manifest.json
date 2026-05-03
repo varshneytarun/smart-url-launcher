@@ -1,7 +1,7 @@
 {
   "manifest_version": 3,
   "name": "Smart URL Launcher",
-  "version": "1.2.1",
+  "version": "1.2.3",
   "description": "Launch URLs based on clipboard patterns like ServiceNow tickets, Jira issues, and more",
   "permissions": [
     "clipboardRead",

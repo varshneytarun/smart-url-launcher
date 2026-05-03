@@ -45,11 +45,19 @@ function showPopup(reason, text = '') {
  */
 async function launchFromClipboard(tab) {
   // Use the offscreen document to read the clipboard
-  await chrome.offscreen.createDocument({
-    url: 'offscreen.html',
-    reasons: ['CLIPBOARD'],
-    justification: 'Reading clipboard text to find matching patterns',
-  });
+  try {
+    await chrome.offscreen.createDocument({
+      url: 'offscreen.html',
+      reasons: ['CLIPBOARD'],
+      justification: 'Reading clipboard text to find matching patterns',
+    });
+  } catch (e) {
+    // Document may already exist from a previous invocation (e.g. rapid double-click)
+    if (!e.message?.includes('Only a single offscreen')) {
+      console.error('Failed to create offscreen document:', e);
+      return;
+    }
+  }
 
   const clipboardText = await chrome.runtime.sendMessage({
     command: 'read-clipboard',
